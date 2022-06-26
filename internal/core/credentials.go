@@ -1,10 +1,12 @@
 package core
 
+import "time"
+
 type Credentials struct {
-	ID        int64 `pgx:"column:id;primary_key"`
-	Timestamp int64 `pgx:"column:timestamp"`
-	Login     int64 `pgx:"column:login"`
-	Password  int64 `pgx:"column:password"`
+	ID        int64     `db:"column:id;primary_key"`
+	Timestamp time.Time `db:"column:timestamp"`
+	Login     string    `db:"column:login"`
+	Password  string    `db:"column:password"`
 }
 
 func (Credentials) TableName() string {

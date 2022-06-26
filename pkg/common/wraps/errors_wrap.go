@@ -1,4 +1,4 @@
-package err_wrapper
+package wraps
 
 import (
 	"encoding/json"
@@ -7,14 +7,14 @@ import (
 )
 
 func WrapErrorBadRequest(w http.ResponseWriter, err error) {
-	WrapErrorBadReq(w, err, http.StatusBadRequest)
+	WrapError(w, err, http.StatusBadRequest)
 }
 
 func WrapErrorServer(w http.ResponseWriter, err error) {
-	WrapErrorBadReq(w, err, http.StatusInternalServerError)
+	WrapError(w, err, http.StatusInternalServerError)
 }
 
-func WrapErrorBadReq(w http.ResponseWriter, err error, httpStatus int) {
+func WrapError(w http.ResponseWriter, err error, httpStatus int) {
 	var m = map[string]string{
 		"result": "error",
 		"data":   err.Error(),
@@ -29,10 +29,11 @@ func WrapErrorBadReq(w http.ResponseWriter, err error, httpStatus int) {
 	if err != nil {
 		fmt.Println(err)
 	}
+
 }
 
-func WrapOK(w http.ResponseWriter, m map[string]interface{}) {
-	res, _ := json.Marshal(m)
+func WrapOK(w http.ResponseWriter, message map[string]interface{}) {
+	res, _ := json.Marshal(message)
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	_, err := fmt.Fprintln(w, string(res))

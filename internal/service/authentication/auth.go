@@ -7,7 +7,7 @@ import (
 )
 
 type Credential interface {
-	GetCredentials(ctx context.Context, person *aggregate.Person) (res *core.Credentials, err error)
+	GetCredentials(ctx context.Context, person *aggregate.Person) (res []*core.Credentials, err error)
 }
 
 type AuthService struct {
@@ -24,9 +24,9 @@ func (a *AuthService) Authenticate(ctx context.Context, person *aggregate.Person
 		return "не ок", err
 	}
 
-	if credentials == nil {
+	if len(credentials) == 0 {
 		return "не ок", err
 	}
 
-	return "ок", nil
+	return "access granted", nil
 }
